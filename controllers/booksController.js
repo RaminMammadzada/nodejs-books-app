@@ -10,8 +10,8 @@ var bookController = {
 
 function addBook(req, res) {
     let book = req.body;
-    bookDao.create(book).
-        then((data) => {
+    bookDao.create(book)
+        .then((data) => {
             res.send(data);
         })
         .catch((error) => {
@@ -20,8 +20,8 @@ function addBook(req, res) {
 }
 
 function findBookById(req, res) {
-    bookDao.findById(req.params.id).
-        then((data) => {
+    bookDao.findById(req.params.id)
+        .then((data) => {
             res.send(data);
         })
         .catch((error) => {
@@ -30,8 +30,8 @@ function findBookById(req, res) {
 }
 
 function deleteBookById(req, res) {
-    bookDao.deleteById(req.params.id).
-        then((data) => {
+    bookDao.deleteById(req.params.id)
+        .then((data) => {
             res.status(200).json({
                 message: "Book deleted successfully",
                 book: data
@@ -43,8 +43,8 @@ function deleteBookById(req, res) {
 }
 
 function updateBook(req, res) {
-    bookDao.updateBook(req.body, req.params.id).
-        then((data) => {
+    bookDao.updateBook(req.body, req.params.id)
+        .then((data) => {
             res.status(200).json({
                 message: "Book updated successfully",
                 book: data
@@ -56,8 +56,8 @@ function updateBook(req, res) {
 }
 
 function findAllBooks(req, res) {
-    bookDao.findAll().
-        then((data) => {
+    bookDao.findAll()
+        .then((data) => {
             res.send(data);
         })
         .catch((error) => {

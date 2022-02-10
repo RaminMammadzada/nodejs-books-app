@@ -1,4 +1,4 @@
-const Book = require("../db/models/book");
+const { Book } = require("../db/models/index");
 
 var bookDao = {
     findAll: findAll,

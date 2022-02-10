@@ -2,8 +2,7 @@
 const {
   Model
 } = require('sequelize');
-
-const Book = (sequelize, DataTypes) => {
+module.exports = (sequelize, DataTypes) => {
   class Book extends Model {
     /**
      * Helper method for defining associations.
@@ -24,5 +23,3 @@ const Book = (sequelize, DataTypes) => {
   });
   return Book;
 };
-
-module.exports = Book;
