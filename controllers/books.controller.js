@@ -1,4 +1,4 @@
-const bookDao = require("../daos/bookDao");
+const bookDao = require("../daos/book.dao");
 
 var bookController = {
     addBook: addBook,

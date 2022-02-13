@@ -1,9 +1,33 @@
-const path = require('path');
 const express = require('express');
-const bodyParser = require('body-parser');
+// const bodyParser = require('body-parser');
 const cors = require("cors");
+const cookieSession = require("cookie-session");
+const db = require('./db/models');
+const app = express();
 
-const db = require('./db/models/index');
+app.use(cors("*"));
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.use(function(req, res, next) {
+    res.header(
+      "Access-Control-Allow-Headers",
+      "Origin, Content-Type, Accept"
+    );
+    next();
+});
+
+app.use(
+    cookieSession({
+      name: "ramin-session",
+      secret: "COOKIE_SECRET",
+      httpOnly: true,
+      sameSite: 'strict'
+    })
+);
+  
+
 const sequelize = db.sequelize
 sequelize.authenticate().then(() => {
     console.log('Datebase connected...');
@@ -11,11 +35,8 @@ sequelize.authenticate().then(() => {
     console.log('Error: ' + err);
 });
 
-const app = express();
-
-app.use(bodyParser.json({ limit: '50mb'}));
-app.use(bodyParser.urlencoded({ extended: true, limit: '50mb'}));
-app.use(cors("*"));
+// app.use(bodyParser.json({ limit: '50mb'}));
+// app.use(bodyParser.urlencoded({ extended: true, limit: '50mb'}));
 
 app.use('/', require('./routes'));
 
