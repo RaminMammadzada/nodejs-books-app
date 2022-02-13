@@ -17,6 +17,9 @@ module.exports = {
       publishedYear: {
         type: Sequelize.STRING
       },
+      etag: {
+        type: Sequelize.STRING
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

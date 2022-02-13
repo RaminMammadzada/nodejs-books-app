@@ -28,10 +28,9 @@ function create(bookData) {
 function updateBook(bookData, id) {
     var updatedBook = {
         title: bookData.title,
-        technologies: bookData.technologies,
-        description: bookData.description,
-        budget: bookData.budget,
-        contact_email: bookData.contact_email
+        etag: bookData.etag,
+        technologies: bookData.publishedYear,
+        author: bookData.author
     };
     return Book.update(updatedBook, { where: { id: id } });
 }
