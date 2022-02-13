@@ -54,7 +54,8 @@ async function signin (req, res) {
         res.status(200).send({
             id: user.id,
             username: user.username,
-            email: user.email
+            email: user.email,
+            accessToken: token
         });
     })
     .catch(err => {
