@@ -1,53 +1,49 @@
-const path = require('path');
-
 const express = require('express');
-const bodyParser = require('body-parser');
-
-
-const db = require('./db/models/index');
-const User = require('./db/models/user');
-
-const app = express();
+// const bodyParser = require('body-parser');
 const cors = require("cors");
+const cookieSession = require("cookie-session");
+const db = require('./db/models');
+const app = express();
 
-var corsOptions = {
-    origin: "http://localhost:8081"
-  };
-  
-app.use(cors(corsOptions));
+app.use(cors("*"));
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-app.use(bodyParser.urlencoded({extended: false}));
-app.use(express.static(path.join(__dirname, 'public')));
-
-
-app.use((req, res, next) => {
-    User.findById(1)
-        .then(user => {
-            req.user = user
-            next();
-        })
-        .catch(err => console.log(err))
+app.use(function(req, res, next) {
+    res.header(
+      "Access-Control-Allow-Headers",
+      "Origin, Content-Type, Accept"
+    );
+    next();
 });
 
-// db.sequelize
-//     .sync()
-//     .then(result => {
-//         return User.findById(1)
-//     })
-//     .then(user => {
-//         console.log(user)
-//     })
-//     .then(res => {
-//         app.listen(3000);
-//     })
-//     .catch(err => {
-//         console.log(err);
-//     })
+app.use(
+    cookieSession({
+      name: "ramin-session",
+      secret: "COOKIE_SECRET",
+      httpOnly: true,
+      sameSite: 'strict'
+    })
+);
+  
 
-try {
-    db.sequelize.authenticate();
-    console.log('Connection has been established successfully by me.');
-} catch (error) {
-    console.error('Unable to connect to the database:', error);
-}
+const sequelize = db.sequelize
+sequelize.authenticate().then(() => {
+    console.log('Datebase connected...');
+}).catch(err => {
+    console.log('Error: ' + err);
+});
+
+// app.use(bodyParser.json({ limit: '50mb'}));
+// app.use(bodyParser.urlencoded({ extended: true, limit: '50mb'}));
+
+app.use('/', require('./routes'));
+
+const PORT = process.env.PORT || 4000;
+(async () => {
+    await sequelize.sync().then(() => {
+        app.listen(PORT, console.log(`Server started on port ${PORT}`));
+    }).catch(err => console.log("Error: " + err))
+    
+})();
